@@ -1,0 +1,14 @@
+[
+    {
+        "student_id": 2,
+        "name": "komal",
+        "email": "komal33@gmail.com",
+        "marks": 60.0
+    },
+    {
+        "student_id": 3,
+        "name": "mayur",
+        "email": "mayur44@gmail.com",
+        "marks": 60.0
+    }
+]
