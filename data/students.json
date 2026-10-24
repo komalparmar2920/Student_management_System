@@ -1,14 +1,44 @@
 [
-    {
-        "student_id": 2,
-        "name": "komal",
-        "email": "komal33@gmail.com",
-        "marks": 60.0
-    },
-    {
-        "student_id": 3,
-        "name": "mayur",
-        "email": "mayur44@gmail.com",
-        "marks": 60.0
-    }
+  {
+    "student_id": 2,
+    "name": "komal",
+    "email": "komal33@gmail.com",
+    "marks": 60.0
+  },
+  {
+    "student_id": 3,
+    "name": "mayur",
+    "email": "mayur44@gmail.com",
+    "marks": 60.0
+  },
+  {
+    "student_id": 4,
+    "name": "priti",
+    "email": "priti22@gmail.com",
+    "marks": 70.0
+  },
+  {
+    "student_id": 5,
+    "name": "anita",
+    "email": "anita77@gmail.com",
+    "marks": 70.0
+  },
+  {
+    "student_id": 6,
+    "name": "sonu",
+    "email": "sonu44@gmail.com",
+    "marks": 70.0
+  },
+  {
+    "student_id": 7,
+    "name": "priya",
+    "email": "priya44@gmail.com",
+    "marks": 80.0
+  },
+  {
+    "student_id": 8,
+    "name": "riya",
+    "email": "riya99@gmail.com",
+    "marks": 90.0
+  }
 ]

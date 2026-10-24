@@ -1,6 +1,9 @@
+import asyncio
 from pathlib import Path
 from models.student import Student
+from services import io_tasks
 from services.student_manager import StudentManager
+from storage.json_storage import JSONStorage
 
 def display_student(students:list[Student]) -> None:
     if not students:
@@ -15,6 +18,15 @@ def display_student(students:list[Student]) -> None:
             f"\nMarks: {student.marks:.2f}"
         )
 
+def run_io_comparison(manager: StudentManager) -> None:
+    students = manager.list_all()
+    if not students:
+        print("Add at least one student first.")
+        return
+    print(f"Running {len(students) * len(io_tasks.Task_delays)} simulated I/O tasks "
+          f"for {len(students)} student(s) in 3 modes...")
+    io_tasks.print_report(asyncio.run(io_tasks.compare(students)))
+
 def read_student_details()->tuple[str,str,float]:
     name=input("Enter student name: ").strip()
     email=input("Enter email: ").strip()
@@ -22,9 +34,20 @@ def read_student_details()->tuple[str,str,float]:
 
     return name,email,marks
 
+def run_add_and_view(manager:StdeuntManager) -> None:
+    name,email,marks=read_student_details()
+    student,students = asyncio.run(
+        io_tasks.add_and_view(manager.add_student,manager.list_all,name,email,marks)
+    )    
+    print(f"Student added successfully. ID : {student.student_id}")
+    display_student(students)
+
 def main() -> None:
     data_file=Path(__file__).resolve().parent /"data"/"students.json"
-    manager=StudentManager(data_file)
+    storage = JSONStorage(data_file)
+
+    manager=StudentManager(storage)
+    print([m for m in dir(manager) if not m.startswith("_")])
 
     while True:
         print("\n Student Management System")
@@ -33,7 +56,8 @@ def main() -> None:
         print("3.search student")
         print("4.Update student")
         print("5.delete student")
-        print("6.Exit")
+        print("6.Add & view student togher (async)")
+        print("7.Exit")
 
         number=input("Enter your choice:").strip()
 
@@ -68,7 +92,11 @@ def main() -> None:
 
                 manager.delete_student(student_id)
                 print("Student deleted successfully")
+             
             elif number=="6":
+                run_add_and_view(manager)
+
+            elif number=="7":
                 print("Exiting student management system")
                 break
             else:

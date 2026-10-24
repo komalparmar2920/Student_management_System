@@ -2,11 +2,11 @@ from models.student import Student
 from storage.json_storage import JSONStorage
 
 class StudentManager:
-    def __init__(self,file_path:str) -> None:
-        self.storage=JSONStorage(file_path)
-        self.students:list[student]=[]
+    def __init__(self,storage: JSONStorage):
+        self.storage = storage
+        self.students: list[Student] =[]
         self._load_students()
-
+    
     def _load_students(self) -> None:
         records=self.storage.load()
         self.students=[Student.from_dict(record) for record in records]
@@ -15,7 +15,9 @@ class StudentManager:
         email=[student.email.casefold() for student in self.students]
 
         if len(ids) != len(set(ids)):
-            raise ValueError("Dublicate student email found in storage")
+            raise ValueError("Dublicate student student id found in storage")
+        if len(email) != len(set(email)):
+            raise ValueError("Dublicate student email found in storage")    
 
     def _save_student(self) -> None:
         record = [student.to_dict() for student in self.students]
@@ -55,10 +57,16 @@ class StudentManager:
     def get_students(self) -> list[Student]:
         return self.students.copy()
 
+    def list_all(self) -> list[Student]:
+        return self.get_students()
+
+    def get(self,student_id:int) -> Student | None:
+        return next((student for students in self.students if student.student_id==student_id), None)        
+
     def search_student(self,keyword:str) -> list[Student]:
         keyword=keyword.strip().casefold()    
         if not keyword:
-            raise ValueError("Search keyworld is not in list")
+            raise ValueError("Search keyworld is not in list")        
 
         return[
             student
@@ -93,4 +101,4 @@ class StudentManager:
                 del self.students[index]
                 self._save_student()
                 return                     
-        raise ValueError(f"Student ID {student_id} was not found.")        
+        raise ValueError(f"Student ID {student_id} was not found.")       
